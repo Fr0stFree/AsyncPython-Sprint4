@@ -2,7 +2,7 @@ from pydantic import BaseModel, UUID4, HttpUrl, Field
 
 
 class UrlBase(BaseModel):
-    full_url: str
+    full_url: HttpUrl
 
 
 class UrlCreate(UrlBase):
@@ -15,7 +15,7 @@ class UrlUpdate(UrlBase):
 
 class UrlDBBase(UrlBase):
     id: UUID4
-    full_url: str
+    full_url: HttpUrl
     clicks: int
 
     class Config:

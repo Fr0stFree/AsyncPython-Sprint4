@@ -1,6 +1,7 @@
 from uuid import uuid4
+import datetime as dt
 
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String, DateTime, Boolean
 from sqlalchemy.orm import relationship
 from sqlalchemy.dialects.postgresql import UUID
 
@@ -12,4 +13,5 @@ class Url(Base):
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid4)
     full_url = Column(String(255), nullable=False, unique=True, index=True)
-    clicks = Column(Integer, nullable=False, default=0)
+    clicks = relationship("UrlClick", back_populates="url")
+    is_active = Column(Boolean, nullable=False, default=True)
