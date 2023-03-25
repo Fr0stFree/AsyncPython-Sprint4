@@ -33,4 +33,3 @@ class UrlResponse(BaseModel):
 class UrlStatus(BaseModel):
     url: UrlResponse
     clicks: list[UrlClickResponse] | int
-    
