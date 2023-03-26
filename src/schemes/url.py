@@ -23,7 +23,7 @@ class UrlResponse(BaseModel):
     
     @validator('id')
     def id_to_shorten_url(cls, v):
-        return f'{settings.SERVER_ADDRESS}/{v}'
+        return f'{settings.server_address}/{v}'
     
     class Config:
         orm_mode = True

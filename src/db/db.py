@@ -8,7 +8,7 @@ from settings import settings
 
 Base = declarative_base()
 
-engine = create_async_engine(url=settings.DATABASE_DSN, echo=True, future=True)
+engine = create_async_engine(url=settings.database_dsn, echo=True, future=True)
 async_session = sessionmaker(bind=engine, expire_on_commit=False, class_=AsyncSession)
 
 

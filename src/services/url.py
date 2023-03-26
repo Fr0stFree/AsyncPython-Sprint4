@@ -17,7 +17,7 @@ class UrlRepository(RepositoryInterface[UrlModel, UrlCreate, UrlUpdate]):
                                url_id: UUID) -> HttpUrl:
         url = await super().get(session, url_id)
         if not url.is_active:
-            raise UrlIsBanned
+            raise UrlIsBanned(url=url.full_url)
         await UrlClick.create(session, schema=UrlClickCreate(url_id=url.id, client=client))
         return url.full_url
 

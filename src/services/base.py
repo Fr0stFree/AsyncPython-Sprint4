@@ -41,9 +41,7 @@ class RepositoryInterface(Generic[ModelType, CreateSchemaType, UpdateSchemaType]
         statement = select(self._model).where(self._model.id == id)
         result = await session.execute(statement)
         if (obj := result.scalar_one_or_none()) is None:
-            await session.rollback()
-            raise ObjectDoesNotExist
-        await session.commit()
+            raise ObjectDoesNotExist(f"{self._model.__name__} with id {id} does not exist")
         return obj
 
     async def filter(self, session: AsyncSession, *, offset: int = 0,
@@ -52,7 +50,6 @@ class RepositoryInterface(Generic[ModelType, CreateSchemaType, UpdateSchemaType]
                                        .offset(offset) \
                                        .limit(limit)
         result = await session.execute(statement)
-        await session.commit()
         return result.scalars().all()
 
     async def create(self, session: AsyncSession, *, schema: CreateSchemaType) -> ModelType:
@@ -62,7 +59,7 @@ class RepositoryInterface(Generic[ModelType, CreateSchemaType, UpdateSchemaType]
             result = await session.execute(statement)
         except sqlalchemy.exc.IntegrityError:
             await session.rollback()
-            raise ObjectAlreadyExists
+            raise ObjectAlreadyExists(f"{self._model.__name__} with <{schema}> already exists.")
         await session.commit()
         return result.scalar_one()
     
@@ -74,7 +71,7 @@ class RepositoryInterface(Generic[ModelType, CreateSchemaType, UpdateSchemaType]
             result = await session.execute(statement)
         except sqlalchemy.exc.IntegrityError:
             await session.rollback()
-            raise ObjectAlreadyExists
+            raise ObjectAlreadyExists(f"Some {self._model.__name__}'s with <{schema}> are exists.")
         await session.commit()
         return result.scalars().all()
     
@@ -86,7 +83,7 @@ class RepositoryInterface(Generic[ModelType, CreateSchemaType, UpdateSchemaType]
         result = await session.execute(statement)
         if (obj := result.scalar_one_or_none()) is None:
             await session.rollback()
-            raise ObjectDoesNotExist
+            raise ObjectDoesNotExist(f"{self._model.__name__} with id {id} does not exist")
         await session.commit()
         return obj
 
@@ -96,6 +93,6 @@ class RepositoryInterface(Generic[ModelType, CreateSchemaType, UpdateSchemaType]
         result = await session.execute(statement)
         if (obj := result.scalar_one_or_none()) is None:
             await session.rollback()
-            raise ObjectDoesNotExist
+            raise ObjectDoesNotExist(f"{self._model.__name__} with id {id} does not exist")
         await session.commit()
         return obj
