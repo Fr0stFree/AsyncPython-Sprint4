@@ -2,14 +2,14 @@ from pydantic import BaseSettings, Field
 
 
 class Settings(BaseSettings):
-    SERVER_PORT: int = Field(..., env='SERVER_PORT')
-    SERVER_HOST: str = Field(..., env='SERVER_HOST')
+    SERVER_PORT: int = Field(8080, env='SERVER_PORT')
+    SERVER_HOST: str = Field('localhost', env='SERVER_HOST')
 
-    DB_HOST: str = Field(..., env='DB_HOST')
-    DB_PORT: int = Field(..., env='DB_PORT')
-    DB_NAME: str = Field(..., env='DB_NAME')
-    DB_PASSWORD: str = Field(..., env='DB_PASSWORD')
-    DB_USER: str = Field(..., env='DB_USER')
+    DB_HOST: str = Field('localhost', env='DB_HOST')
+    DB_PORT: int = Field(5432, env='DB_PORT')
+    DB_NAME: str = Field('postgres', env='DB_NAME')
+    DB_PASSWORD: str = Field('postgres', env='DB_PASSWORD')
+    DB_USER: str = Field('postgres', env='DB_USER')
     
     @property
     def database_dsn(self) -> str:
