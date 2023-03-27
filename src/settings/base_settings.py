@@ -10,6 +10,7 @@ class Settings(BaseSettings):
     DB_NAME: str = Field('postgres', env='DB_NAME')
     DB_PASSWORD: str = Field('postgres', env='DB_PASSWORD')
     DB_USER: str = Field('postgres', env='DB_USER')
+    DEFAULT_DSN = 'postgresql+asyncpg://postgres:postgres@localhost:5432/postgres'
     
     @property
     def database_dsn(self) -> str:
@@ -26,5 +27,5 @@ class Settings(BaseSettings):
         return f'http://{self.SERVER_HOST}:{self.SERVER_PORT}'
     
     class Config:
-        env_file = '.env'
+        env_file = '../.env'
         env_file_encoding = 'utf-8'
